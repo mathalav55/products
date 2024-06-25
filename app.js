@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose')
 const app = express();
 const product_controller = require('./src/controllers/product.controller')
-
+const bodyParser = require('body-parser')
 //connecting to database
 mongoose.connect('mongodb+srv://matalav55:zHLhXGm7tcIz8wN2@cluster0.drx9fpc.mongodb.net/shop',
     {
@@ -15,9 +15,12 @@ mongoose.connect('mongodb+srv://matalav55:zHLhXGm7tcIz8wN2@cluster0.drx9fpc.mong
         console.log(err.message);
     })
 
+
+
+app.use(bodyParser.urlencoded({ extended : false}));
+app.use(bodyParser.json());
+
 app.use('/api/products',product_controller)
-
-
 
 app.use('/', (req, res, next) => {
     const err = new Error('not found');
