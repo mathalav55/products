@@ -4,7 +4,7 @@ const app = express();
 const product_controller = require('./src/controllers/product.controller')
 
 //connecting to database
-mongoose.connect('mongodb://localhost:27017/shop',
+mongoose.connect('mongodb+srv://matalav55:zHLhXGm7tcIz8wN2@cluster0.drx9fpc.mongodb.net/shop',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
