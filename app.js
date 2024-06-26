@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const app = express();
 const product_controller = require('./src/controllers/product.controller')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 //connecting to database
 mongoose.connect('mongodb+srv://matalav55:zHLhXGm7tcIz8wN2@cluster0.drx9fpc.mongodb.net/shop',
     {
@@ -16,7 +17,7 @@ mongoose.connect('mongodb+srv://matalav55:zHLhXGm7tcIz8wN2@cluster0.drx9fpc.mong
     })
 
 
-
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended : false}));
 app.use(bodyParser.json());
 

@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
     minimumOrderQuantity: { type: Number },
     meta: { type: Object },
     images: { type: Array },
-    thumbnail: { type: Array }
+    thumbnail: { type: String }
 })
 
 

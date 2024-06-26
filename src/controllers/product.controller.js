@@ -43,6 +43,7 @@ router.post('/', (req, res, next) => {
         title: req.body.title,
         description: req.body.description,
         price: req.body.price,
+        thumbnail: req.body.thumbnail
     });
 
     product.save()
@@ -125,5 +126,26 @@ router.get('/search', (req, res, next) => {
             })
         })
 })
+
+router.delete('/:id', (req, res, next) => {
+    console.log({ body: req.body })
+    const id = req.params.id;
+    const body = req.body;
+    Product.deleteOne({ _id: id }, { $set: body })
+        .exec()
+        .then((result) => {
+            res.status(200).json({
+                message: "Product Deleted",
+                request: result
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                message: 'Error while deleting product',
+                error: err
+            })
+        })
+})
+
 
 module.exports = router;
