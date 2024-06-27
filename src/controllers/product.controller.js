@@ -4,14 +4,17 @@ const mongoose = require('mongoose')
 const Product = require('../models/product.model')
 
 router.get('/', (req, res, next) => {
-    const { page_size, page_no } = req.query;
+    const { page_size, page_no, sort_by, sort } = req.query;
     let skip = 0;
     if (page_no && page_size) {
         skip = page_no * page_size
     } else if (page_no) {
         skip = page_no * 10
     }
-    Product.find().limit(page_size || 10).skip(skip).exec().then(async (docs) => {
+    let _sort = sort_by?.toLocaleLowerCase() || 'title';
+    let _sort_direction = sort?.toLowerCase() || 'asc'
+    console.log({ _sort, _sort_direction })
+    Product.find().sort({ [_sort]: _sort_direction }).limit(page_size || 10).skip(skip).exec().then(async (docs) => {
         var response;
         if (docs.length == 0) {
             response = {
@@ -88,21 +91,23 @@ router.put('/:id', (req, res, next) => {
 })
 
 router.get('/search', (req, res, next) => {
-    const { page_size, page_no, q } = req.query;
-    console.log({q})
+    const { page_size, page_no, q,sort_by,sort } = req.query;
+    console.log({ query: req.query })
     let skip = 0;
     if (page_no && page_size) {
-        skip = page_no * page_size
+        skip = (page_no - 1) * page_size
     } else if (page_no) {
-        skip = page_no * 10
+        skip = (page_no - 1) * 10
     }
+    let _sort = sort_by?.toLocaleLowerCase() || 'title';
+    let _sort_direction = sort?.toLowerCase() || 'asc'
     Product.find({
         $or: [
             { title: { $regex: new RegExp(q, 'i') } },
             { description: { $regex: new RegExp(q, 'i') } },
             { category: { $regex: new RegExp(q, 'i') } }
         ]
-    }).limit(page_size || 10).skip(skip).exec().then(async (docs) => {
+    }).sort({ [_sort]: _sort_direction }).limit(page_size || 10).skip(skip).exec().then(async (docs) => {
         var response;
         if (docs.length == 0) {
             response = {
